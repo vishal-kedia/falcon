@@ -9,6 +9,8 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.google.common.collect.Maps;
 import com.kedialabs.converters.JsonMapConverter;
 
@@ -30,9 +32,7 @@ public class Contractor extends BaseDomain{
     private String pinCode;
     private String phoneNo;
     
+    @JsonIgnore
     private Boolean deleted;
     
-    @Column(length = 10000)
-    @Convert(converter = JsonMapConverter.class)
-    private Map<String, Object> attributes = Maps.newHashMap();
 }

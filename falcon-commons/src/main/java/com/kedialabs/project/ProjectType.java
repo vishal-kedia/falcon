@@ -1,4 +1,4 @@
-package com.kedialabs.domain;
+package com.kedialabs.project;
 
 public enum ProjectType {
     BATCHING_PLANT;

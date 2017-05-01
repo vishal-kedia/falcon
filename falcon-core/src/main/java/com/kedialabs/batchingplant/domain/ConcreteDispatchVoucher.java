@@ -15,13 +15,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.google.common.collect.Maps;
+import com.kedialabs.batchingplant.ConcreteMixture;
 import com.kedialabs.converters.JsonMapConverter;
 import com.kedialabs.domain.BaseDomain;
 import com.kedialabs.measurement.MaterialUnit;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -48,9 +52,14 @@ public class ConcreteDispatchVoucher extends BaseDomain {
     
     private Timestamp dispatchTime;
     
+    @JsonIgnore
     private Boolean deleted;
     
-    @Column(length = 10000)
-    @Convert(converter = JsonMapConverter.class)
-    private Map<ConcreteDispatchVoucherAttribute, Object> attributes = Maps.newHashMap();
+    @JsonIgnore
+    public void setLocation(String location){
+        attributes.put(ConcreteDispatchVoucherAttribute.LOCATION.name(), location);
+    }
+    private String getLocation(){
+        return (String)attributes.get(ConcreteDispatchVoucherAttribute.LOCATION.name());
+    }
 }

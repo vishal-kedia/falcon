@@ -15,10 +15,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.Validate;
+import org.codehaus.jackson.annotate.JsonIgnore;
+
+import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
+import com.kedialabs.batchingplant.MaterialInventoryVoucher.InventoryType;
+import com.kedialabs.batchingplant.MaterialInventoryVoucher.MaterialInventoryVoucherAttribute;
+import com.kedialabs.batchingplant.RawMaterialType;
 import com.kedialabs.converters.JsonMapConverter;
 import com.kedialabs.domain.BaseDomain;
 import com.kedialabs.domain.Vendor;
+import com.kedialabs.measurement.MaterialUnit;
 import com.kedialabs.measurement.Unit;
 
 import lombok.Data;
@@ -32,19 +40,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class MaterialInventoryVoucher extends BaseDomain{
-    public static enum MaterialInventoryVoucherAttribute{
-        VEHICLE_NO,
-        CHALLAN_NO,
-        ROYALTY_NO,
-        GATE_ENTRY_NO,
-        SOURCE_MEASUREMENT,
-        SOURCE_MEASUREMENT_UNIT,
-        SOURCE,
-        QUALITY_CHECK_PASSED
-    }
-    public static enum InventoryType {
-        IN,OUT;
-    }
+    
     @Enumerated(EnumType.STRING)
     private RawMaterialType materialType;
     
@@ -74,8 +70,70 @@ public class MaterialInventoryVoucher extends BaseDomain{
     
     private Boolean deleted;
     
-    @Column(length = 10000)
-    @Convert(converter = JsonMapConverter.class)
-    private Map<MaterialInventoryVoucher, Object> attributes = Maps.newHashMap();
+    @JsonIgnore
+    public void setChallanNo(String challanNo){
+        attributes.put(MaterialInventoryVoucherAttribute.CHALLAN_NO.name(), challanNo);
+    }
     
+    public String getChallanNo(){
+        return (String)attributes.get(MaterialInventoryVoucherAttribute.CHALLAN_NO.name());
+    }
+    
+    @JsonIgnore
+    public void setRoyaltyNo(String royaltyNo){
+        attributes.put(MaterialInventoryVoucherAttribute.ROYALTY_NO.name(), royaltyNo);
+    }
+    
+    public String getRoyaltyNo(){
+        return (String)attributes.get(MaterialInventoryVoucherAttribute.ROYALTY_NO.name());
+    }
+    
+    @JsonIgnore
+    public void setGateEntryNo(String gateEntryNo){
+        attributes.put(MaterialInventoryVoucherAttribute.GATE_ENTRY_NO.name(), gateEntryNo);
+    }
+    
+    public String getGateEntryNo(){
+        return (String)attributes.get(MaterialInventoryVoucherAttribute.GATE_ENTRY_NO.name());
+    }
+    
+    @JsonIgnore
+    public void setSourceMeasurement(Double sourceMeasurement,MaterialUnit sourceMeasurementUnit){
+        Validate.notNull(sourceMeasurement);
+        Validate.notNull(sourceMeasurementUnit);
+        Validate.notNull(materialType);
+        Validate.isTrue(sourceMeasurementUnit.getUnit() == materialType.getUnit());
+        attributes.put(MaterialInventoryVoucherAttribute.SOURCE_MEASUREMENT.name(), sourceMeasurement);
+        attributes.put(MaterialInventoryVoucherAttribute.SOURCE_MEASUREMENT_UNIT.name(), sourceMeasurementUnit.getName());
+    }
+    
+    public Double getSourceMeasurement(){
+        return (Double)attributes.get(MaterialInventoryVoucherAttribute.SOURCE_MEASUREMENT.name());
+    }
+    
+    public MaterialUnit getSourceMeasurementUnit(){
+        String materialUnit = (String)attributes.get(MaterialInventoryVoucherAttribute.SOURCE_MEASUREMENT_UNIT.name());
+        if(!Strings.isNullOrEmpty(materialUnit)){
+            return MaterialUnit.valueOf(materialUnit);
+        }
+        return null;
+    }
+    
+    @JsonIgnore
+    public void setSource(String source){
+        attributes.put(MaterialInventoryVoucherAttribute.SOURCE.name(), source);
+    }
+    
+    public String getSource(){
+        return (String)attributes.get(MaterialInventoryVoucherAttribute.SOURCE.name());
+    }
+    
+    @JsonIgnore
+    public void setQalityCheckPassed(Boolean isQualityCheckPassed){
+        attributes.put(MaterialInventoryVoucherAttribute.QUALITY_CHECK_PASSED.name(), isQualityCheckPassed);
+    }
+    
+    public Boolean getQualityCheckPassed(){
+        return (Boolean)attributes.get(MaterialInventoryVoucherAttribute.QUALITY_CHECK_PASSED.name());
+    }
 }

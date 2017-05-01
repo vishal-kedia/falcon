@@ -47,7 +47,4 @@ public class VehicleInventory extends BaseDomain {
     @JsonIgnore
     private Project project;
     
-    @Column(length = 10000)
-    @Convert(converter = JsonMapConverter.class)
-    private Map<String, Object> attributes = Maps.newHashMap();
 }

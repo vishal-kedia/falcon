@@ -18,6 +18,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 import com.google.common.collect.Maps;
 import com.kedialabs.converters.JsonMapConverter;
+import com.kedialabs.project.ProjectType;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -43,9 +44,7 @@ public class Project extends BaseDomain {
     @JsonIgnore
     private Contractor contractor;
     
+    @JsonIgnore
     private Boolean deleted;
     
-    @Column(length = 10000)
-    @Convert(converter = JsonMapConverter.class)
-    private Map<String, Object> attributes = Maps.newHashMap();
 }

@@ -1,4 +1,4 @@
-package com.kedialabs.batchingplant.domain;
+package com.kedialabs.batchingplant;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;

@@ -1,7 +1,10 @@
 package com.kedialabs.domain;
 
 import java.sql.Timestamp;
+import java.util.Map;
 
+import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,6 +14,9 @@ import javax.persistence.PreUpdate;
 
 import org.activejpa.entity.Model;
 import org.codehaus.jackson.annotate.JsonIgnore;
+
+import com.google.common.collect.Maps;
+import com.kedialabs.converters.JsonMapConverter;
 
 @MappedSuperclass
 public class BaseDomain extends Model {
@@ -87,6 +93,11 @@ public class BaseDomain extends Model {
     public void setUpdatedBy(String updatedBy){
         this.updatedBy = updatedBy;
     }
+    
+    @Column(length = 10000)
+    @Convert(converter = JsonMapConverter.class)
+    @JsonIgnore
+    protected Map<String, Object> attributes = Maps.newHashMap();
 
     @PrePersist
     public void prePersist() {

@@ -1,4 +1,4 @@
-package com.kedialabs.batchingplant.domain;
+package com.kedialabs.batchingplant;
 
 import com.kedialabs.measurement.Unit;
 

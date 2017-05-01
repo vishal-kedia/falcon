@@ -18,6 +18,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 import com.google.common.collect.Maps;
 import com.kedialabs.converters.JsonMapConverter;
+import com.kedialabs.user.UserType;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,9 +32,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class User extends BaseDomain {
     
-    public static enum UserType {
-        SUPERVISOR
-    }
     private String userName;
     private String name;
     private String addressLine1;
@@ -46,6 +44,7 @@ public class User extends BaseDomain {
     @Enumerated(EnumType.STRING)
     private UserType userType;
     
+    @JsonIgnore
     private Boolean deleted;
     
     @ManyToOne(fetch = FetchType.EAGER)
@@ -53,7 +52,4 @@ public class User extends BaseDomain {
     @JsonIgnore
     private Project project;
     
-    @Column(length = 10000)
-    @Convert(converter = JsonMapConverter.class)
-    private Map<String, Object> attributes = Maps.newHashMap();
 }
