@@ -28,9 +28,6 @@ public class Vendor extends BaseDomain {
     private String pinCode;
     private String phoneNo;
     
-    @JsonIgnore
-    private Boolean deleted;
-    
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
     @JsonIgnore

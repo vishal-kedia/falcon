@@ -53,9 +53,6 @@ public class ConcreteDispatchVoucher extends BaseDomain {
     private Timestamp dispatchTime;
     
     @JsonIgnore
-    private Boolean deleted;
-    
-    @JsonIgnore
     public void setLocation(String location){
         attributes.put(ConcreteDispatchVoucherAttribute.LOCATION.name(), location);
     }

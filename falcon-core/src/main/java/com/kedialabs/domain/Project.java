@@ -1,11 +1,7 @@
 package com.kedialabs.domain;
 
-import java.util.Map;
-
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -16,8 +12,6 @@ import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
-import com.google.common.collect.Maps;
-import com.kedialabs.converters.JsonMapConverter;
 import com.kedialabs.project.ProjectType;
 
 import lombok.Data;
@@ -43,8 +37,4 @@ public class Project extends BaseDomain {
     @JoinColumn(name = "contractor_id")
     @JsonIgnore
     private Contractor contractor;
-    
-    @JsonIgnore
-    private Boolean deleted;
-    
 }

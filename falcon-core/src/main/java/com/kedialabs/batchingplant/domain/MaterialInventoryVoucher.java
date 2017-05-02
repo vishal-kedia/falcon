@@ -68,8 +68,6 @@ public class MaterialInventoryVoucher extends BaseDomain{
     
     private String remark;
     
-    private Boolean deleted;
-    
     @JsonIgnore
     public void setChallanNo(String challanNo){
         attributes.put(MaterialInventoryVoucherAttribute.CHALLAN_NO.name(), challanNo);

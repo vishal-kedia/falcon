@@ -15,6 +15,7 @@ import javax.persistence.PreUpdate;
 import org.activejpa.entity.Model;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.kedialabs.converters.JsonMapConverter;
 
@@ -30,6 +31,8 @@ public class BaseDomain extends Model {
     private String createdBy;
     
     private String updatedBy;
+    
+    private Boolean deleted;
 
     @Override
     @Id
@@ -98,10 +101,31 @@ public class BaseDomain extends Model {
     @Convert(converter = JsonMapConverter.class)
     @JsonIgnore
     protected Map<String, Object> attributes = Maps.newHashMap();
+    
+    @JsonIgnore
+    public void setAttributes(Map<String,Object> attributes){
+        this.attributes = attributes;
+    }
+    
+    @JsonIgnore
+    public Map<String,Object> getAttributes(){
+        return attributes;
+    }
+    
+    @JsonIgnore
+    public void setDeleted(Boolean isDeleted){
+        this.deleted = isDeleted;
+    }
+    
+    @JsonIgnore
+    public Boolean isDeleted(){
+        return deleted;
+    }
 
     @PrePersist
     public void prePersist() {
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+        setAttributes(ImmutableMap.<String, Object>copyOf(attributes));
         setCreatedAt(currentTime);
         setUpdatedAt(currentTime);
     }

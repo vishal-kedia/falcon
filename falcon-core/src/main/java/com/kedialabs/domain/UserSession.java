@@ -22,7 +22,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserSession extends BaseDomain {
     private String uuid;
-    private Boolean deleted;
     
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
