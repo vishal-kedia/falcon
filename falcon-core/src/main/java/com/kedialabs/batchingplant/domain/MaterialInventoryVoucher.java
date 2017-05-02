@@ -1,12 +1,9 @@
 package com.kedialabs.batchingplant.domain;
 
 import java.sql.Timestamp;
-import java.util.Map;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -19,11 +16,9 @@ import org.apache.commons.lang3.Validate;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Maps;
 import com.kedialabs.batchingplant.MaterialInventoryVoucher.InventoryType;
 import com.kedialabs.batchingplant.MaterialInventoryVoucher.MaterialInventoryVoucherAttribute;
 import com.kedialabs.batchingplant.RawMaterialType;
-import com.kedialabs.converters.JsonMapConverter;
 import com.kedialabs.domain.BaseDomain;
 import com.kedialabs.domain.Vendor;
 import com.kedialabs.measurement.MaterialUnit;

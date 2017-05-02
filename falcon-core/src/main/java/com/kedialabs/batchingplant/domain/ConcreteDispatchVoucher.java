@@ -1,12 +1,9 @@
 package com.kedialabs.batchingplant.domain;
 
 import java.sql.Timestamp;
-import java.util.Map;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -17,15 +14,12 @@ import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
-import com.google.common.collect.Maps;
 import com.kedialabs.batchingplant.ConcreteMixture;
-import com.kedialabs.converters.JsonMapConverter;
 import com.kedialabs.domain.BaseDomain;
 import com.kedialabs.measurement.MaterialUnit;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -56,7 +50,8 @@ public class ConcreteDispatchVoucher extends BaseDomain {
     public void setLocation(String location){
         attributes.put(ConcreteDispatchVoucherAttribute.LOCATION.name(), location);
     }
-    private String getLocation(){
+    
+    public String getLocation(){
         return (String)attributes.get(ConcreteDispatchVoucherAttribute.LOCATION.name());
     }
 }
