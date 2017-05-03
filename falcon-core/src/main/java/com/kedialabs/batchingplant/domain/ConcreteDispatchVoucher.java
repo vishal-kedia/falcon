@@ -19,6 +19,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.kedialabs.batchingplant.ConcreteDispatchVoucher.ConcreteDispatchVoucherAttribute;
 import com.kedialabs.batchingplant.ConcreteMixture;
 import com.kedialabs.converters.JsonMapConverter;
 import com.kedialabs.domain.BaseDomain;
@@ -35,9 +36,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class ConcreteDispatchVoucher extends BaseDomain {
-    public static enum ConcreteDispatchVoucherAttribute {
-        LOCATION
-    }
+    
     @Enumerated(EnumType.STRING)
     private ConcreteMixture concreteType;
     

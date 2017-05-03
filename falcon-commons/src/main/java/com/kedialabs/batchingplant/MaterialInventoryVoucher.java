@@ -1,5 +1,7 @@
 package com.kedialabs.batchingplant;
 
+import java.sql.Timestamp;
+
 import com.kedialabs.measurement.MaterialUnit;
 import com.kedialabs.measurement.Unit;
 
@@ -32,6 +34,10 @@ public class MaterialInventoryVoucher {
     private Long transportVehicleId;
     
     private Long recieverVehicleId;
+    
+    private Timestamp transactionTime;
+    
+    private String remark;
     
     private String challanNo;
     
