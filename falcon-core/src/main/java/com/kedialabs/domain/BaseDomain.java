@@ -1,9 +1,7 @@
 package com.kedialabs.domain;
 
 import java.sql.Timestamp;
-import java.util.Map;
 
-import javax.persistence.Convert;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,10 +11,6 @@ import javax.persistence.PreUpdate;
 
 import org.activejpa.entity.Model;
 import org.codehaus.jackson.annotate.JsonIgnore;
-
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
-import com.kedialabs.converters.JsonMapConverter;
 
 @MappedSuperclass
 public class BaseDomain extends Model {
@@ -30,9 +24,6 @@ public class BaseDomain extends Model {
     private String createdBy;
     
     private String updatedBy;
-    
-    @Convert(converter = JsonMapConverter.class)
-    protected Map<String, Object> attributes = Maps.newHashMap();
     
     private Boolean deleted;
 
@@ -100,16 +91,6 @@ public class BaseDomain extends Model {
     }
     
     @JsonIgnore
-    public void setAttributes(Map<String,Object> attributes){
-        this.attributes = attributes;
-    }
-    
-    @JsonIgnore
-    public Map<String,Object> getAttributes(){
-        return attributes;
-    }
-    
-    @JsonIgnore
     public void setDeleted(Boolean isDeleted){
         this.deleted = isDeleted;
     }
@@ -122,7 +103,6 @@ public class BaseDomain extends Model {
     @PrePersist
     public void prePersist() {
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-        setAttributes(ImmutableMap.<String, Object>copyOf(attributes));
         setCreatedAt(currentTime);
         setUpdatedAt(currentTime);
     }

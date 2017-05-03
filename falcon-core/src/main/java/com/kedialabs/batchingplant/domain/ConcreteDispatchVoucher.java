@@ -1,20 +1,26 @@
 package com.kedialabs.batchingplant.domain;
 
 import java.sql.Timestamp;
+import java.util.Map;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.kedialabs.batchingplant.ConcreteMixture;
+import com.kedialabs.converters.JsonMapConverter;
 import com.kedialabs.domain.BaseDomain;
 import com.kedialabs.measurement.MaterialUnit;
 
@@ -46,6 +52,10 @@ public class ConcreteDispatchVoucher extends BaseDomain {
     
     private Timestamp dispatchTime;
     
+    @Convert(converter = JsonMapConverter.class)
+    @JsonIgnore
+    protected Map<String, Object> attributes = Maps.newHashMap();
+    
     @JsonIgnore
     public void setLocation(String location){
         attributes.put(ConcreteDispatchVoucherAttribute.LOCATION.name(), location);
@@ -53,5 +63,11 @@ public class ConcreteDispatchVoucher extends BaseDomain {
     
     public String getLocation(){
         return (String)attributes.get(ConcreteDispatchVoucherAttribute.LOCATION.name());
+    }
+    
+    @PrePersist
+    public void prePersist() {
+        attributes = ImmutableMap.<String, Object>copyOf(attributes);
+        super.prePersist();
     }
 }

@@ -1,23 +1,29 @@
 package com.kedialabs.batchingplant.domain;
 
 import java.sql.Timestamp;
+import java.util.Map;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.Validate;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.kedialabs.batchingplant.MaterialInventoryVoucher.InventoryType;
 import com.kedialabs.batchingplant.MaterialInventoryVoucher.MaterialInventoryVoucherAttribute;
+import com.kedialabs.converters.JsonMapConverter;
 import com.kedialabs.batchingplant.RawMaterialType;
 import com.kedialabs.domain.BaseDomain;
 import com.kedialabs.domain.Vendor;
@@ -62,6 +68,10 @@ public class MaterialInventoryVoucher extends BaseDomain{
     private Timestamp transactionTime;
     
     private String remark;
+    
+    @Convert(converter = JsonMapConverter.class)
+    @JsonIgnore
+    protected Map<String, Object> attributes = Maps.newHashMap();
     
     @JsonIgnore
     public void setChallanNo(String challanNo){
@@ -128,5 +138,11 @@ public class MaterialInventoryVoucher extends BaseDomain{
     
     public Boolean getQualityCheckPassed(){
         return (Boolean)attributes.get(MaterialInventoryVoucherAttribute.QUALITY_CHECK_PASSED.name());
+    }
+    
+    @PrePersist
+    public void prePersist() {
+        attributes = ImmutableMap.<String, Object>copyOf(attributes);
+        super.prePersist();
     }
 }

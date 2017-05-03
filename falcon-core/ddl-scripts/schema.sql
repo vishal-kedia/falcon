@@ -1,3 +1,7 @@
+create database falcon;
+
+use falcon;
+
 CREATE TABLE `contractors` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL,
