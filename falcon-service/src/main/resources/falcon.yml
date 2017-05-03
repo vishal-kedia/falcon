@@ -1,7 +1,5 @@
 logging:
   level: INFO
-  loggers:
-    com.olacabs.megatron: ERROR
   appenders:
     - type: console
       threshold: ALL
@@ -9,14 +7,12 @@ logging:
       logFormat: "%d [%thread] %-5level %c{15} - [%X{X-Transaction-Key} - %X{X-Request-Key}] - %msg%n%rEx"
 
 server:
-  type: simple
-  applicationContextPath: /
-  adminContextPath: /admin
-  connector:
-    port: 8095
-    type: http
-  requestLog:
-    timeZone: Asia/Calcutta
+  applicationConnectors:
+    - type: http
+      port: 8080
+  adminConnectors:
+    - type: http
+      port: 8081
 
 dbConfig:
   driverClass: com.mysql.jdbc.Driver

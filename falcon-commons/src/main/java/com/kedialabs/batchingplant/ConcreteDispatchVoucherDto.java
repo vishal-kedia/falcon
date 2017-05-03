@@ -7,11 +7,7 @@ import com.kedialabs.measurement.MaterialUnit;
 import lombok.Data;
 
 @Data
-public class ConcreteDispatchVoucher {
-    public static enum ConcreteDispatchVoucherAttribute {
-        LOCATION
-    }
-    
+public class ConcreteDispatchVoucherDto {
     private ConcreteMixture concreteType;
     private Double quantity;
     private MaterialUnit unit;

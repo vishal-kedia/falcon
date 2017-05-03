@@ -8,19 +8,7 @@ import com.kedialabs.measurement.Unit;
 import lombok.Data;
 
 @Data
-public class MaterialInventoryVoucher {
-    public static enum MaterialInventoryVoucherAttribute{
-        CHALLAN_NO,
-        ROYALTY_NO,
-        GATE_ENTRY_NO,
-        SOURCE_MEASUREMENT,
-        SOURCE_MEASUREMENT_UNIT,
-        SOURCE,
-        QUALITY_CHECK_PASSED
-    }
-    public static enum InventoryType {
-        IN,OUT;
-    }
+public class MaterialInventoryVoucherDto {
     private RawMaterialType materialType;
     
     private InventoryType inventoryType;

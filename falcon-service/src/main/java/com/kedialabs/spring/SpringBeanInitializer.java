@@ -14,12 +14,18 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 import com.kedialabs.application.config.AppConfig;
 import com.kedialabs.application.config.DBConfig;
+import com.kedialabs.resources.ContractorResource;
+import com.kedialabs.resources.ProjectResource;
+import com.kedialabs.resources.UserResource;
+import com.kedialabs.resources.VehicleInventoryResource;
+import com.kedialabs.resources.VendorResource;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 import io.dropwizard.setup.Environment;
 
 @Configuration
-@ComponentScan(basePackageClasses = {})
+@ComponentScan(basePackageClasses = { ContractorResource.class, ProjectResource.class, UserResource.class, VehicleInventoryResource.class,
+        VendorResource.class })
 public class SpringBeanInitializer {
     
     @Inject
@@ -55,13 +61,13 @@ public class SpringBeanInitializer {
     @Inject
     public LocalContainerEntityManagerFactoryBean getLocalContainerEntityManagerFactoryBean(DBConfig dbConfig,ComboPooledDataSource dataSource) throws PropertyVetoException{
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
-        entityManagerFactory.setPersistenceXmlLocation("classpath:persistence.xml");
+        entityManagerFactory.setPersistenceXmlLocation("classpath:META-INF/persistence.xml");
         entityManagerFactory.setPersistenceUnitName("falcon");
         entityManagerFactory.setDataSource(getComboPooledDataSource(dbConfig));
         Properties jpaProperties = new Properties();
         jpaProperties.put("hibernate.ejb.naming_strategy", "org.hibernate.cfg.ImprovedNamingStrategy");
-        jpaProperties.put("hibernate.show_sql", Boolean.FALSE);
-        jpaProperties.put("hibernate.format_sql", Boolean.FALSE);
+        jpaProperties.put("hibernate.show_sql", Boolean.TRUE);
+        jpaProperties.put("hibernate.format_sql", Boolean.TRUE);
         jpaProperties.put("hibernate.current_session_context_class", "thread");
         jpaProperties.put("hibernate.dialect", dbConfig.getHibernateProperties().getDialect());
         jpaProperties.put("hibernate.connection.release_mode", "AFTER_TRANSACTION");

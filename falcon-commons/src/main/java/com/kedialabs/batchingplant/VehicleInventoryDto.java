@@ -1,6 +1,10 @@
 package com.kedialabs.batchingplant;
 
-public class VehicleInventory {
+import lombok.Data;
+
+@Data
+public class VehicleInventoryDto {
     private String vehicleNo;
     private String description;
+    private Long vendorId;
 }

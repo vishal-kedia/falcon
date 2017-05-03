@@ -13,6 +13,11 @@ import org.activejpa.utils.OpenSessionInViewFilter;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.kedialabs.application.config.AppConfig;
+import com.kedialabs.resources.ContractorResource;
+import com.kedialabs.resources.ProjectResource;
+import com.kedialabs.resources.UserResource;
+import com.kedialabs.resources.VehicleInventoryResource;
+import com.kedialabs.resources.VendorResource;
 import com.kedialabs.spring.SpringBeanInitializer;
 import com.kedialabs.spring.SpringProvider;
 
@@ -52,6 +57,11 @@ public class App extends Application<AppConfig>{
             }
         });
         registerOSIVFilter(env);
+        env.jersey().register(new ContractorResource());
+        env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(ProjectResource.class));
+        env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(UserResource.class));
+        env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(VehicleInventoryResource.class));
+        env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(VendorResource.class));
     }
     private void registerOSIVFilter(Environment environment) {
         Filter openSessionInViewFilter = new OpenSessionInViewFilter();

@@ -2,6 +2,7 @@ package com.kedialabs.domain;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -25,12 +26,21 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class Project extends BaseDomain {
+    
+    @Column(name = "name")
     private String name;
+    
+    @Column(name = "lat")
     private Double lat;
+    
+    @Column(name = "lng")
     private Double lng;
+    
+    @Column(name = "description")
     private String description;
     
     @Enumerated(EnumType.STRING)
+    @Column(name = "project_type")
     private ProjectType projectType;
     
     @ManyToOne(fetch = FetchType.EAGER)

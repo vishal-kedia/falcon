@@ -3,7 +3,7 @@ package com.kedialabs.vendor;
 import lombok.Data;
 
 @Data
-public class Vendor {
+public class VendorDto {
     private String name;
     private String addressLine1;
     private String addressLine2;

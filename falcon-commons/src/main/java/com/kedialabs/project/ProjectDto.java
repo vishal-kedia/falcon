@@ -3,7 +3,7 @@ package com.kedialabs.project;
 import lombok.Data;
 
 @Data
-public class Project {
+public class ProjectDto {
     private String name;
     private Double lat;
     private Double lng;

@@ -2,6 +2,7 @@ package com.kedialabs.domain;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -21,6 +22,8 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class UserSession extends BaseDomain {
+    
+    @Column(name = "uuid")
     private String uuid;
     
     @ManyToOne(fetch = FetchType.EAGER)
