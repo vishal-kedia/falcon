@@ -1,0 +1,35 @@
+logging:
+  level: INFO
+  loggers:
+    com.olacabs.megatron: ERROR
+  appenders:
+    - type: console
+      threshold: ALL
+      timeZone: Asia/Calcutta
+      logFormat: "%d [%thread] %-5level %c{15} - [%X{X-Transaction-Key} - %X{X-Request-Key}] - %msg%n%rEx"
+
+server:
+  type: simple
+  applicationContextPath: /
+  adminContextPath: /admin
+  connector:
+    port: 8095
+    type: http
+  requestLog:
+    timeZone: Asia/Calcutta
+
+dbConfig:
+  driverClass: com.mysql.jdbc.Driver
+  user: root
+  password: root
+  url: jdbc:mysql://localhost/falcon?autoReconnect=true
+  hibernateProperties:
+    dialect: org.hibernate.dialect.MySQLDialect
+  connectionPoolProperties:
+    acquireIncrement: 5
+    initialPoolSize: 5
+    minPoolSize: 10
+    maxPoolSize: 50
+    maxIdleTime: 300
+    maxStatements: 500
+    idleConnectionTestPeriod: 30

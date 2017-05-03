@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "login_sessions")
+@Table(name = "user_session")
 @Access(AccessType.FIELD)
 @Data
 @EqualsAndHashCode(callSuper = true)

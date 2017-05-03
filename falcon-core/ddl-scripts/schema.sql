@@ -56,6 +56,19 @@ CREATE TABLE `project_users` (
   UNIQUE KEY `idx_project_users` (`user_name`)
 );
 
+CREATE TABLE `user_session` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(64) NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `attributes` varchar(1000) DEFAULT '{}',
+  `deleted` bit(1) DEFAULT NULL,
+  `created_by` varchar(64),
+  `updated_by` varchar(64),
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_user_session` (`uuid`,`user_id`)
+);
 
 CREATE TABLE `project_vendors` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -87,7 +100,8 @@ CREATE TABLE `vehicle_inventory_ledger` (
   `updated_by` varchar(64),
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idx_vehicle_inventory_ledger` (`vehicle_no`,`vendor_id`)
 );
 
 CREATE TABLE `material_inventory_ledger` (
@@ -108,7 +122,7 @@ CREATE TABLE `material_inventory_ledger` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `idx_material_inventory_ledger` (`supplier_id`,`transport_vehicle_id`,`dispatch_time`)
+  KEY `idx_material_inventory_ledger` (`supplier_id`,`transport_vehicle_id`,`transaction_time`)
 );
 
 CREATE TABLE `concrete_dispatch_ledger` (
@@ -126,5 +140,5 @@ CREATE TABLE `concrete_dispatch_ledger` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `idx_material_inventory_ledger` (`supplier_id`,`transport_vehicle_id`,`dispatch_time`)
+  KEY `idx_concrete_dispatch_ledger` (`transport_vehicle_id`,`dispatch_time`)
 );

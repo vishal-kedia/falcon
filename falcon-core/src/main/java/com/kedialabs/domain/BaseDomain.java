@@ -3,7 +3,6 @@ package com.kedialabs.domain;
 import java.sql.Timestamp;
 import java.util.Map;
 
-import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,6 +30,9 @@ public class BaseDomain extends Model {
     private String createdBy;
     
     private String updatedBy;
+    
+    @Convert(converter = JsonMapConverter.class)
+    protected Map<String, Object> attributes = Maps.newHashMap();
     
     private Boolean deleted;
 
@@ -96,11 +98,6 @@ public class BaseDomain extends Model {
     public void setUpdatedBy(String updatedBy){
         this.updatedBy = updatedBy;
     }
-    
-    @Column(length = 10000)
-    @Convert(converter = JsonMapConverter.class)
-    @JsonIgnore
-    protected Map<String, Object> attributes = Maps.newHashMap();
     
     @JsonIgnore
     public void setAttributes(Map<String,Object> attributes){
