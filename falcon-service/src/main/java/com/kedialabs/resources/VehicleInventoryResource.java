@@ -4,7 +4,6 @@ import java.util.Objects;
 
 import javax.inject.Named;
 import javax.validation.Valid;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
@@ -15,8 +14,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.apache.commons.lang3.Validate;
 
 import com.codahale.metrics.annotation.Timed;
 import com.kedialabs.batchingplant.VehicleInventoryDto;

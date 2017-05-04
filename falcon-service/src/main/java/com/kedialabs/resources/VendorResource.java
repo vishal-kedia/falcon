@@ -15,8 +15,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.apache.commons.lang3.Validate;
-
 import com.codahale.metrics.annotation.Timed;
 import com.kedialabs.domain.Project;
 import com.kedialabs.domain.Vendor;
