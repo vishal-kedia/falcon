@@ -26,14 +26,13 @@ import com.kedialabs.user.UserUpdateDto;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Path("/v1/contractor/{contractorId}/project/{projectId}")
+@Path("/v1/contractor/{contractorId}/project/{projectId}/user")
 @Named
 public class UserResource {
     
     private final Hashids hashids = new Hashids("password", 10); 
     
     @POST
-    @Path("/user")
     @Timed
     public Response createUser(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@Valid UserDto userDto){
         Validate.notNull(userDto,"user create request can't be null");
@@ -59,7 +58,7 @@ public class UserResource {
     }
     
     @PUT
-    @Path("/user/{userId}")
+    @Path("/{userId}")
     @Timed
     public Response updateUser(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@PathParam("userId") Long userId,@Valid UserUpdateDto userDto){
         Validate.notNull(userDto,"user update request can't be null");
@@ -77,7 +76,7 @@ public class UserResource {
     }
     
     @PUT
-    @Path("/user/{userId}/reset_password")
+    @Path("/{userId}/reset_password")
     @Timed
     public Response setPassword(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@PathParam("userId") Long userId,@QueryParam("password") String password){
         User user = User.first("id",userId,"project.id",projectId,"project.contractor.id",contractorId,"deleted",Boolean.FALSE,"project.deleted",Boolean.FALSE,"project.contractor.deleted",Boolean.FALSE);
@@ -89,7 +88,7 @@ public class UserResource {
     }
     
     @DELETE
-    @Path("/user/{userId}")
+    @Path("/{userId}")
     @Timed
     public Response deleteUser(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@PathParam("userId") Long userId){
         User user = User.first("id",userId,"project.id",projectId,"project.contractor.id",contractorId,"deleted",Boolean.FALSE,"project.deleted",Boolean.FALSE,"project.contractor.deleted",Boolean.FALSE);

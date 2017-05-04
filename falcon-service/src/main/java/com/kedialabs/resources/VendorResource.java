@@ -21,12 +21,11 @@ import com.kedialabs.vendor.VendorDto;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Path("/v1/contractor/{contractorId}/project/{projectId}")
+@Path("/v1/contractor/{contractorId}/project/{projectId}/vendor")
 @Named
 public class VendorResource {
 
     @POST
-    @Path("/vendor")
     @Timed
     public Response createUser(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@Valid VendorDto vendorDto){
         Validate.notNull(vendorDto,"user create request can't be null");
@@ -45,7 +44,7 @@ public class VendorResource {
     }
     
     @PUT
-    @Path("/vendor/{vendorId}")
+    @Path("/{vendorId}")
     @Timed
     public Response updateUser(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@PathParam("vendorId") Long vendorId,@Valid VendorDto vendorDto){
         Validate.notNull(vendorDto,"user update request can't be null");
@@ -62,7 +61,7 @@ public class VendorResource {
     }
     
     @DELETE
-    @Path("/vendor/{vendorId}")
+    @Path("/{vendorId}")
     @Timed
     public Response deleteUser(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@PathParam("vendorId") Long vendorId){
         Vendor vendor = Vendor.first("id",vendorId,"project.id",projectId,"project.contractor.id",contractorId,"deleted",Boolean.FALSE,"project.deleted",Boolean.FALSE,"project.contractor.deleted",Boolean.FALSE);

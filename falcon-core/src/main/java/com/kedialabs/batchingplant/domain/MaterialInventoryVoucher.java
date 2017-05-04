@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -42,14 +43,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MaterialInventoryVoucher extends BaseDomain{
     
+    @Column(name = "material_type")
     @Enumerated(EnumType.STRING)
     private RawMaterialType materialType;
     
+    @Column(name = "inventory_type")
     @Enumerated(EnumType.STRING)
     private InventoryType inventoryType;
     
+    @Column(name = "quantity")
     private Double quantity;
     
+    @Column(name = "unit") 
     @Enumerated(EnumType.STRING)
     private Unit unit;
     
@@ -65,39 +70,37 @@ public class MaterialInventoryVoucher extends BaseDomain{
     @JoinColumn(name = "reciever_vehicle_id")
     private VehicleInventory recieverVehicle;
     
+    @Column(name = "transaction_time")
     private Timestamp transactionTime;
     
+    @Column(name = "remark")
     private String remark;
-    
-    @Convert(converter = JsonMapConverter.class)
-    @JsonIgnore
-    protected Map<String, Object> attributes = Maps.newHashMap();
     
     @JsonIgnore
     public void setChallanNo(String challanNo){
-        attributes.put(MaterialInventoryVoucherAttribute.CHALLAN_NO.name(), challanNo);
+        this.getAttributes().put(MaterialInventoryVoucherAttribute.CHALLAN_NO.name(), challanNo);
     }
     
     public String getChallanNo(){
-        return (String)attributes.get(MaterialInventoryVoucherAttribute.CHALLAN_NO.name());
+        return (String)this.getAttributes().get(MaterialInventoryVoucherAttribute.CHALLAN_NO.name());
     }
     
     @JsonIgnore
     public void setRoyaltyNo(String royaltyNo){
-        attributes.put(MaterialInventoryVoucherAttribute.ROYALTY_NO.name(), royaltyNo);
+        this.getAttributes().put(MaterialInventoryVoucherAttribute.ROYALTY_NO.name(), royaltyNo);
     }
     
     public String getRoyaltyNo(){
-        return (String)attributes.get(MaterialInventoryVoucherAttribute.ROYALTY_NO.name());
+        return (String)this.getAttributes().get(MaterialInventoryVoucherAttribute.ROYALTY_NO.name());
     }
     
     @JsonIgnore
     public void setGateEntryNo(String gateEntryNo){
-        attributes.put(MaterialInventoryVoucherAttribute.GATE_ENTRY_NO.name(), gateEntryNo);
+        this.getAttributes().put(MaterialInventoryVoucherAttribute.GATE_ENTRY_NO.name(), gateEntryNo);
     }
     
     public String getGateEntryNo(){
-        return (String)attributes.get(MaterialInventoryVoucherAttribute.GATE_ENTRY_NO.name());
+        return (String)this.getAttributes().get(MaterialInventoryVoucherAttribute.GATE_ENTRY_NO.name());
     }
     
     @JsonIgnore
@@ -106,16 +109,16 @@ public class MaterialInventoryVoucher extends BaseDomain{
         Validate.notNull(sourceMeasurementUnit);
         Validate.notNull(materialType);
         Validate.isTrue(sourceMeasurementUnit.getUnit() == materialType.getUnit());
-        attributes.put(MaterialInventoryVoucherAttribute.SOURCE_MEASUREMENT.name(), sourceMeasurement);
-        attributes.put(MaterialInventoryVoucherAttribute.SOURCE_MEASUREMENT_UNIT.name(), sourceMeasurementUnit.getName());
+        this.getAttributes().put(MaterialInventoryVoucherAttribute.SOURCE_MEASUREMENT.name(), sourceMeasurement);
+        this.getAttributes().put(MaterialInventoryVoucherAttribute.SOURCE_MEASUREMENT_UNIT.name(), sourceMeasurementUnit.getName());
     }
     
     public Double getSourceMeasurement(){
-        return (Double)attributes.get(MaterialInventoryVoucherAttribute.SOURCE_MEASUREMENT.name());
+        return (Double)this.getAttributes().get(MaterialInventoryVoucherAttribute.SOURCE_MEASUREMENT.name());
     }
     
     public MaterialUnit getSourceMeasurementUnit(){
-        String materialUnit = (String)attributes.get(MaterialInventoryVoucherAttribute.SOURCE_MEASUREMENT_UNIT.name());
+        String materialUnit = (String)this.getAttributes().get(MaterialInventoryVoucherAttribute.SOURCE_MEASUREMENT_UNIT.name());
         if(!Strings.isNullOrEmpty(materialUnit)){
             return MaterialUnit.valueOf(materialUnit);
         }
@@ -124,25 +127,19 @@ public class MaterialInventoryVoucher extends BaseDomain{
     
     @JsonIgnore
     public void setSource(String source){
-        attributes.put(MaterialInventoryVoucherAttribute.SOURCE.name(), source);
+        this.getAttributes().put(MaterialInventoryVoucherAttribute.SOURCE.name(), source);
     }
     
     public String getSource(){
-        return (String)attributes.get(MaterialInventoryVoucherAttribute.SOURCE.name());
+        return (String)this.getAttributes().get(MaterialInventoryVoucherAttribute.SOURCE.name());
     }
     
     @JsonIgnore
     public void setQalityCheckPassed(Boolean isQualityCheckPassed){
-        attributes.put(MaterialInventoryVoucherAttribute.QUALITY_CHECK_PASSED.name(), isQualityCheckPassed);
+        this.getAttributes().put(MaterialInventoryVoucherAttribute.QUALITY_CHECK_PASSED.name(), isQualityCheckPassed);
     }
     
     public Boolean getQualityCheckPassed(){
-        return (Boolean)attributes.get(MaterialInventoryVoucherAttribute.QUALITY_CHECK_PASSED.name());
-    }
-    
-    @PrePersist
-    public void prePersist() {
-        attributes = ImmutableMap.<String, Object>copyOf(attributes);
-        super.prePersist();
+        return (Boolean)this.getAttributes().get(MaterialInventoryVoucherAttribute.QUALITY_CHECK_PASSED.name());
     }
 }

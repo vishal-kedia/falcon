@@ -22,12 +22,11 @@ import com.kedialabs.domain.Vendor;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Path("/v1/contractor/{contractorId}/project/{projectId}")
+@Path("/v1/contractor/{contractorId}/project/{projectId}/vehicle_inventory")
 @Named
 public class VehicleInventoryResource {
     
     @POST
-    @Path("/vehicle_inventory")
     @Timed
     public Response createVehicleInventory(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@Valid VehicleInventoryDto vehicleInventoryDto){
         Validate.notNull(vehicleInventoryDto,"vehicle inventory create request can't be null");
@@ -44,7 +43,7 @@ public class VehicleInventoryResource {
     }
     
     @POST
-    @Path("/vehicle_inventory/{vehicleInventoryId}")
+    @Path("/{vehicleInventoryId}")
     @Timed
     public Response updateVehicleInventory(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@PathParam("vehicleInventoryId") Long vehicleInventoryId,@Valid VehicleInventoryUpdateDto vehicleInventoryUpdateDto){
         VehicleInventory vehicleInventory = VehicleInventory.first("id",vehicleInventoryId,"project.id",projectId,"project.contractor.id","contractorId","deleted",Boolean.FALSE,"project.deleted",Boolean.FALSE,"project.contractor.deleted",Boolean.FALSE);
@@ -55,7 +54,7 @@ public class VehicleInventoryResource {
     }
     
     @DELETE
-    @Path("/vehicle_inventory/{vehicleInventoryId}")
+    @Path("/{vehicleInventoryId}")
     @Timed
     public Response deleteVehicleInventory(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@PathParam("vehicleInventoryId") Long vehicleInventoryId){
         VehicleInventory vehicleInventory = VehicleInventory.first("id",vehicleInventoryId,"project.id",projectId,"project.contractor.id","contractorId","deleted",Boolean.FALSE,"project.deleted",Boolean.FALSE,"project.contractor.deleted",Boolean.FALSE);

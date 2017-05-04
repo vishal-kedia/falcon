@@ -16,7 +16,7 @@ public enum JsonSerializer {
     INSTANCE;
     private ObjectMapper objectMapper;
     private JsonSerializer() {
-        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper = new ObjectMapper();
         objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.NONE);
         objectMapper.setVisibility(PropertyAccessor.GETTER, Visibility.PROTECTED_AND_PUBLIC);
         objectMapper.setVisibility(PropertyAccessor.SETTER, Visibility.PROTECTED_AND_PUBLIC);

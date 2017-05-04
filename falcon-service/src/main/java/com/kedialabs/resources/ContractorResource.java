@@ -24,7 +24,6 @@ import com.kedialabs.domain.Contractor;
 public class ContractorResource {
     
     @POST
-    @Timed
     public Response createContractor(@Valid ContractorDto contractorDto) {
         Validate.notNull(contractorDto,"Request object can't be null");
         Contractor contractor = new Contractor();
@@ -35,19 +34,16 @@ public class ContractorResource {
         contractor.setPinCode(contractorDto.getPinCode());
         contractor.setPhoneNo(contractorDto.getPhoneNo());
         contractor.persist();
-        return Response.ok(contractor).build();
-    }
-    
-    @GET
-    @Timed
-    @Path("{contractorId}")
-    public Response getContractor(@PathParam("contractorId") Long contractorId){
         return Response.ok().build();
     }
     
+    @GET @Path("/{contractorId}")
+    public Response getContractor(@PathParam("contractorId") Long contractorId){
+        return Response.ok(Contractor.all()).build();
+    }
+    
     @PUT
-    @Timed
-    @Path("{contractorId}")
+    @Path("/{contractorId}")
     public Response updateContractor(@PathParam("contractorId") Long contractorId,@Valid ContractorDto contractorDto) {
         Contractor contractor = Contractor.findById(contractorId);
         Validate.notNull(contractorDto,"Request object can't be null");
@@ -63,8 +59,7 @@ public class ContractorResource {
     }
     
     @DELETE
-    @Timed
-    @Path("{contractorId}")
+    @Path("/{contractorId}")
     public Response deleteContractor(@PathParam("contractorId") Long contractorId){
         Contractor contractor = Contractor.findById(contractorId);
         Validate.notNull(contractor, "Contractor doesn't exist");

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -37,11 +38,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ConcreteDispatchVoucher extends BaseDomain {
     
+    @Column(name = "concrete_type")
     @Enumerated(EnumType.STRING)
     private ConcreteMixture concreteType;
     
+    @Column(name = "quantity")
     private Double quantity;
     
+    @Column(name = "unit")
     @Enumerated(EnumType.STRING)
     private MaterialUnit unit;
     
@@ -49,24 +53,15 @@ public class ConcreteDispatchVoucher extends BaseDomain {
     @JoinColumn(name = "transport_vehicle_id")
     private VehicleInventory transportVehicle;
     
+    @Column(name = "dispatch_time")
     private Timestamp dispatchTime;
-    
-    @Convert(converter = JsonMapConverter.class)
-    @JsonIgnore
-    protected Map<String, Object> attributes = Maps.newHashMap();
     
     @JsonIgnore
     public void setLocation(String location){
-        attributes.put(ConcreteDispatchVoucherAttribute.LOCATION.name(), location);
+        this.getAttributes().put(ConcreteDispatchVoucherAttribute.LOCATION.name(), location);
     }
     
     public String getLocation(){
-        return (String)attributes.get(ConcreteDispatchVoucherAttribute.LOCATION.name());
-    }
-    
-    @PrePersist
-    public void prePersist() {
-        attributes = ImmutableMap.<String, Object>copyOf(attributes);
-        super.prePersist();
+        return (String)this.getAttributes().get(ConcreteDispatchVoucherAttribute.LOCATION.name());
     }
 }

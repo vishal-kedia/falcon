@@ -20,12 +20,11 @@ import com.kedialabs.project.ProjectDto;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Path("/v1/contractor/{contractorId}")
+@Path("/v1/contractor/{contractorId}/project")
 @Named
 public class ProjectResource {
     
     @POST
-    @Path("/project")
     @Timed
     public Response createProject(@PathParam("contractorId") Long contractorId,@Valid ProjectDto projectDto){
         Validate.notNull(projectDto,"Project create request can't be null");
@@ -43,7 +42,7 @@ public class ProjectResource {
     }
     
     @POST
-    @Path("/project/{projectId}")
+    @Path("/{projectId}")
     @Timed
     public Response updateProject(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@Valid ProjectDto projectDto){
         Project project = Project.first("id",projectId,"contractor.id",contractorId,"contractor.deleted",Boolean.FALSE,"deleted",Boolean.FALSE);
@@ -58,7 +57,7 @@ public class ProjectResource {
     }
     
     @DELETE
-    @Path("/project/{projectId}")
+    @Path("/{projectId}")
     @Timed
     public Response deleteProject(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId){
         Project project = Project.first("id",projectId,"contractor.id",contractorId,"contractor.deleted",Boolean.FALSE,"deleted",Boolean.FALSE);

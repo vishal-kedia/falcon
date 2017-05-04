@@ -31,12 +31,14 @@ public class App extends Application<AppConfig>{
     
     @Override
     public void run(AppConfig config, Environment env) throws Exception {
+        log.info("Initializing the active jpa module");
+        ActiveJpaAgentLoader.instance().loadAgent();
+        
         env.getObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
         SpringProvider.INSTANCE.getContext().getBeanFactory().registerSingleton("configuration", config);
         SpringProvider.INSTANCE.getContext().getBeanFactory().registerSingleton("environment", env);
         SpringProvider.INSTANCE.getContext().register(SpringBeanInitializer.class);
         SpringProvider.INSTANCE.getContext().refresh();
-        
         env.lifecycle().manage(new Managed() {
             @Override
             public void stop() throws Exception {
@@ -49,20 +51,18 @@ public class App extends Application<AppConfig>{
             
             @Override
             public void start() throws Exception {
-                log.info("Initializing the active jpa module");
-                ActiveJpaAgentLoader.instance().loadAgent();
-                
                 log.info("Registering persistence context to ActiveJPA");
                 JPA.instance.addPersistenceUnit("falcon", SpringProvider.INSTANCE.getContext().getBean(EntityManagerFactory.class), true);
             }
         });
         registerOSIVFilter(env);
-        env.jersey().register(new ContractorResource());
+        env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(ContractorResource.class));
         env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(ProjectResource.class));
         env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(UserResource.class));
         env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(VehicleInventoryResource.class));
         env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(VendorResource.class));
     }
+    
     private void registerOSIVFilter(Environment environment) {
         Filter openSessionInViewFilter = new OpenSessionInViewFilter();
         FilterRegistration.Dynamic filter = environment.servlets().addFilter("OSIVFilter", openSessionInViewFilter);
@@ -70,6 +70,7 @@ public class App extends Application<AppConfig>{
         filter = environment.admin().addFilter("OSIVFilter", openSessionInViewFilter);
         filter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
     }
+    
     public static void main(String[] args) throws Exception {
         log.info("Starting App");
         new App().run("server", args[0]);

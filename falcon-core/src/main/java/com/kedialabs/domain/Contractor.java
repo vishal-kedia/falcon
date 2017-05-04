@@ -17,7 +17,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 public class Contractor extends BaseDomain{
-    
     @Column(name = "name")
     private String name;
     

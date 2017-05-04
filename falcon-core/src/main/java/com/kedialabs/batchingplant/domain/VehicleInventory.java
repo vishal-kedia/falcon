@@ -2,6 +2,7 @@ package com.kedialabs.batchingplant.domain;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -26,7 +27,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class VehicleInventory extends BaseDomain {
     
+    @Column(name = "vehicle_no")
     private String vehicleNo;
+    
+    @Column(name = "description")
     private String description;
     
     @ManyToOne(fetch = FetchType.EAGER)
