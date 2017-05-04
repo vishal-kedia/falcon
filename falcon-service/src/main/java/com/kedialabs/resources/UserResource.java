@@ -6,6 +6,7 @@ import javax.inject.Named;
 import javax.validation.Valid;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -17,6 +18,7 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.Validate;
 import org.hashids.Hashids;
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.codahale.metrics.annotation.Timed;
 import com.kedialabs.domain.Project;
@@ -34,9 +36,10 @@ public class UserResource {
     @POST
     @Timed
     public Response createUser(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@Valid UserDto userDto){
-        Validate.notNull(userDto,"user create request can't be null");
         Project project = Project.first("id",projectId,"contractor.id",contractorId,"deleted",Boolean.FALSE,"contractor.deleted",Boolean.FALSE);
-        Validate.notNull(project,"Project doesn't exist");
+        if(Objects.isNull(project)){
+            throw new NotFoundException("Project doesn't exist");
+        }
         User user = new User();
         user.setProject(project);
         user.setUserType(userDto.getUserType());
@@ -61,6 +64,9 @@ public class UserResource {
     @Timed
     public Response getUser(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@PathParam("userId") Long userId){
         User user = User.first("id",userId,"project.id",projectId,"project.contractor.id",contractorId,"deleted",Boolean.FALSE,"project.deleted",Boolean.FALSE,"project.contractor.deleted",Boolean.FALSE);
+        if(Objects.isNull(user)){
+            throw new NotFoundException("User doesn't exist");
+        }
         return Response.ok(user).build();
     }
     
@@ -68,9 +74,10 @@ public class UserResource {
     @Path("/{userId}")
     @Timed
     public Response updateUser(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@PathParam("userId") Long userId,@Valid UserUpdateDto userDto){
-        Validate.notNull(userDto,"user update request can't be null");
         User user = User.first("id",userId,"project.id",projectId,"project.contractor.id",contractorId,"deleted",Boolean.FALSE,"project.deleted",Boolean.FALSE,"project.contractor.deleted",Boolean.FALSE);
-        Validate.notNull(user,"User doesn't exist");
+        if(Objects.isNull(user)){
+            throw new NotFoundException("User doesn't exist");
+        }
         user.setUserType(userDto.getUserType());
         user.setName(userDto.getName());
         user.setAddressLine1(userDto.getAddressLine1());
@@ -85,10 +92,11 @@ public class UserResource {
     @PUT
     @Path("/{userId}/reset_password")
     @Timed
-    public Response setPassword(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@PathParam("userId") Long userId,@QueryParam("password") String password){
+    public Response setPassword(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@PathParam("userId") Long userId,@NotBlank @QueryParam("password") String password){
         User user = User.first("id",userId,"project.id",projectId,"project.contractor.id",contractorId,"deleted",Boolean.FALSE,"project.deleted",Boolean.FALSE,"project.contractor.deleted",Boolean.FALSE);
-        Validate.notNull(user,"User doesn't exist");
-        Validate.notNull(password);
+        if(Objects.isNull(user)){
+            throw new NotFoundException("User doesn't exist");
+        }
         user.setPassword(password);
         user.persist();
         return Response.ok(user).build();
@@ -99,7 +107,9 @@ public class UserResource {
     @Timed
     public Response deleteUser(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@PathParam("userId") Long userId){
         User user = User.first("id",userId,"project.id",projectId,"project.contractor.id",contractorId,"deleted",Boolean.FALSE,"project.deleted",Boolean.FALSE,"project.contractor.deleted",Boolean.FALSE);
-        Validate.notNull(user,"User doesn't exist");
+        if(Objects.isNull(user)){
+            throw new NotFoundException("User doesn't exist");
+        }
         user.setDeleted(Boolean.TRUE);
         user.persist();
         return Response.ok().build();

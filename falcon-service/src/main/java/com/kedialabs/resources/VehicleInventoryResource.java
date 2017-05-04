@@ -1,10 +1,13 @@
 package com.kedialabs.resources;
 
+import java.util.Objects;
+
 import javax.inject.Named;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -30,11 +33,14 @@ public class VehicleInventoryResource {
     @POST
     @Timed
     public Response createVehicleInventory(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@Valid VehicleInventoryDto vehicleInventoryDto){
-        Validate.notNull(vehicleInventoryDto,"vehicle inventory create request can't be null");
         Project project = Project.first("id",projectId,"contractor.id",contractorId,"deleted",Boolean.FALSE,"contractor.deleted",Boolean.FALSE);
-        Validate.notNull(project,"Project doesn't exist");
+        if(Objects.isNull(project)){
+            throw new NotFoundException("Project doesn't exist");
+        }
         Vendor vendor = Vendor.first("id",vehicleInventoryDto.getVendorId(),"project",project,"deleted",Boolean.FALSE);
-        Validate.notNull(vendor,"Vendor doesn't exist");
+        if(Objects.isNull(vendor)){
+            throw new NotFoundException("Vendor doesn't exist");
+        }
         VehicleInventory vehicleInventory = new VehicleInventory();
         vehicleInventory.setProject(project);
         vehicleInventory.setVehicleNo(vehicleInventoryDto.getVehicleNo());
@@ -49,6 +55,9 @@ public class VehicleInventoryResource {
     @Timed
     public Response getVehicleInventory(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@PathParam("vehicleInventoryId") Long vehicleInventoryId){
         VehicleInventory vehicleInventory = VehicleInventory.first("id",vehicleInventoryId,"project.id",projectId,"project.contractor.id",contractorId,"deleted",Boolean.FALSE,"project.deleted",Boolean.FALSE,"project.contractor.deleted",Boolean.FALSE);
+        if(Objects.isNull(vehicleInventory)){
+            throw new NotFoundException("vehicle inventory doesn't exist");
+        }
         return Response.ok(vehicleInventory).build();
     }
     
@@ -57,7 +66,9 @@ public class VehicleInventoryResource {
     @Timed
     public Response updateVehicleInventory(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@PathParam("vehicleInventoryId") Long vehicleInventoryId,@Valid VehicleInventoryUpdateDto vehicleInventoryUpdateDto){
         VehicleInventory vehicleInventory = VehicleInventory.first("id",vehicleInventoryId,"project.id",projectId,"project.contractor.id",contractorId,"deleted",Boolean.FALSE,"project.deleted",Boolean.FALSE,"project.contractor.deleted",Boolean.FALSE);
-        Validate.notNull(vehicleInventory,"Vehicle doesn't exist");
+        if(Objects.isNull(vehicleInventory)){
+            throw new NotFoundException("vehicle inventory doesn't exist");
+        }
         vehicleInventory.setDescription(vehicleInventoryUpdateDto.getDescription());
         vehicleInventory.persist();
         return Response.ok(vehicleInventory).build();
@@ -68,7 +79,9 @@ public class VehicleInventoryResource {
     @Timed
     public Response deleteVehicleInventory(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@PathParam("vehicleInventoryId") Long vehicleInventoryId){
         VehicleInventory vehicleInventory = VehicleInventory.first("id",vehicleInventoryId,"project.id",projectId,"project.contractor.id",contractorId,"deleted",Boolean.FALSE,"project.deleted",Boolean.FALSE,"project.contractor.deleted",Boolean.FALSE);
-        Validate.notNull(vehicleInventory,"Vehicle doesn't exist");
+        if(Objects.isNull(vehicleInventory)){
+            throw new NotFoundException("vehicle inventory doesn't exist");
+        }
         vehicleInventory.setDeleted(Boolean.TRUE);
         vehicleInventory.persist();
         return Response.ok().build();
