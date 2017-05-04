@@ -9,8 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kedialabs.domain.BaseDomain;
 import com.kedialabs.domain.Project;
 import com.kedialabs.domain.Vendor;
@@ -35,7 +34,6 @@ public class VehicleInventory extends BaseDomain {
     
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "vendor_id")
-    @JsonIgnore
     private Vendor vendor;
     
     @ManyToOne(fetch = FetchType.EAGER)

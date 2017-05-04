@@ -67,7 +67,7 @@ public class SpringBeanInitializer {
         Properties jpaProperties = new Properties();
         jpaProperties.put("hibernate.ejb.naming_strategy", "org.hibernate.cfg.ImprovedNamingStrategy");
         jpaProperties.put("hibernate.show_sql", Boolean.TRUE);
-        jpaProperties.put("hibernate.format_sql", Boolean.TRUE);
+        jpaProperties.put("hibernate.format_sql", Boolean.FALSE);
         jpaProperties.put("hibernate.current_session_context_class", "thread");
         jpaProperties.put("hibernate.dialect", dbConfig.getHibernateProperties().getDialect());
         jpaProperties.put("hibernate.connection.release_mode", "AFTER_TRANSACTION");

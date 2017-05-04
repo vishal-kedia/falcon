@@ -41,7 +41,7 @@ CREATE TABLE `projects` (
 CREATE TABLE `project_users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_name` varchar(64) NOT NULL,
-  `password` varchar(64) NOT NULL,
+  `password` varchar(64),
   `name` varchar(64) NOT NULL,
   `address_line1` varchar(128),
   `address_line2` varchar(128),
@@ -98,6 +98,7 @@ CREATE TABLE `vehicle_inventory_ledger` (
   `vehicle_no` varchar(64) NOT NULL,
   `description` varchar(128),
   `vendor_id` int(10) unsigned NOT NULL,
+  `project_id` int(10) unsigned NOT NULL,
   `attributes` varchar(1000) DEFAULT '{}',
   `deleted` bit(1) DEFAULT NULL,
   `created_by` varchar(64),

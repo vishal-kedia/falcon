@@ -14,7 +14,6 @@ import javax.ws.rs.core.Response;
 
 import org.apache.commons.lang3.Validate;
 
-import com.codahale.metrics.annotation.Timed;
 import com.kedialabs.contractor.ContractorDto;
 import com.kedialabs.domain.Contractor;
 
@@ -34,12 +33,12 @@ public class ContractorResource {
         contractor.setPinCode(contractorDto.getPinCode());
         contractor.setPhoneNo(contractorDto.getPhoneNo());
         contractor.persist();
-        return Response.ok().build();
+        return Response.ok(contractor).build();
     }
     
     @GET @Path("/{contractorId}")
     public Response getContractor(@PathParam("contractorId") Long contractorId){
-        return Response.ok(Contractor.all()).build();
+        return Response.ok(Contractor.first("id",contractorId,"deleted",Boolean.FALSE)).build();
     }
     
     @PUT

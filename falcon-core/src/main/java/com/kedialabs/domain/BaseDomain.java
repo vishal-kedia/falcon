@@ -54,7 +54,7 @@ public class BaseDomain extends Model {
     
     @Column(name = "deleted")
     @JsonIgnore
-    private Boolean deleted;
+    private Boolean deleted = Boolean.FALSE;
     
     @Column(name = "attributes")
     @Convert(converter = JsonMapConverter.class)

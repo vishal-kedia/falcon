@@ -40,7 +40,7 @@ public class User extends BaseDomain {
     @Column(name = "city")
     private String city;
     
-    @Column(name = "ping_code")
+    @Column(name = "pin_code")
     private String pinCode;
     
     @Column(name = "phone_no")

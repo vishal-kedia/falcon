@@ -4,8 +4,8 @@ import java.util.Objects;
 
 import javax.inject.Named;
 import javax.validation.Valid;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -25,7 +25,6 @@ import com.kedialabs.user.UserDto;
 import com.kedialabs.user.UserUpdateDto;
 
 @Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
 @Path("/v1/contractor/{contractorId}/project/{projectId}/user")
 @Named
 public class UserResource {
@@ -54,6 +53,14 @@ public class UserResource {
             user.setPassword(hashids.encode(user.getId()));
             user.persist();
         }
+        return Response.ok(user).build();
+    }
+    
+    @GET
+    @Path("/{userId}")
+    @Timed
+    public Response getUser(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@PathParam("userId") Long userId){
+        User user = User.first("id",userId,"project.id",projectId,"project.contractor.id",contractorId,"deleted",Boolean.FALSE,"project.deleted",Boolean.FALSE,"project.contractor.deleted",Boolean.FALSE);
         return Response.ok(user).build();
     }
     
