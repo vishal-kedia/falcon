@@ -12,12 +12,13 @@ import org.activejpa.jpa.JPA;
 import org.activejpa.utils.OpenSessionInViewFilter;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.kedialabs.application.batchingplant.resource.BatchingPlantVehicleInventoryManagementResource;
+import com.kedialabs.application.batchingplant.resource.BatchingPlantVendorManagementResource;
 import com.kedialabs.application.config.AppConfig;
 import com.kedialabs.resources.ContractorResource;
 import com.kedialabs.resources.ProjectResource;
 import com.kedialabs.resources.UserResource;
-import com.kedialabs.resources.VehicleInventoryResource;
-import com.kedialabs.resources.VendorResource;
+import com.kedialabs.resources.UserSessionResource;
 import com.kedialabs.spring.SpringBeanInitializer;
 import com.kedialabs.spring.SpringProvider;
 
@@ -59,8 +60,9 @@ public class App extends Application<AppConfig>{
         env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(ContractorResource.class));
         env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(ProjectResource.class));
         env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(UserResource.class));
-        env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(VehicleInventoryResource.class));
-        env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(VendorResource.class));
+        env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(UserSessionResource.class));
+        env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(BatchingPlantVendorManagementResource.class));
+        env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(BatchingPlantVehicleInventoryManagementResource.class));
     }
     
     private void registerOSIVFilter(Environment environment) {

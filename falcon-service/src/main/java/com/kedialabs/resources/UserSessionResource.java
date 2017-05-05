@@ -37,10 +37,13 @@ public class UserSessionResource {
         if(!Objects.equals(user.getPassword(), requestDto.getPassword())){
             throw new NotAuthorizedException("userName and password doesn't match");
         }
-        UserSession userSession = new UserSession();
-        userSession.setUuid(UUID.randomUUID().toString());
-        userSession.setUser(user);
-        userSession.persist();
+        UserSession userSession = UserSession.first("user",user,"deleted",Boolean.FALSE);
+        if(Objects.isNull(userSession)){
+            userSession = new UserSession();
+            userSession.setUuid(UUID.randomUUID().toString());
+            userSession.setUser(user);
+            userSession.persist();
+        }
         return Response.ok(UserSessionDetails.builder().sessionId(userSession.getUuid()).contractorId(user.getProject().getContractor().getId())
                 .projectId(user.getProject().getId()).userType(user.getUserType()).build()).build();
     }

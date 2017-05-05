@@ -12,20 +12,27 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
+import com.kedialabs.application.batchingplant.resource.BatchingPlantVehicleInventoryManagementResource;
+import com.kedialabs.application.batchingplant.resource.BatchingPlantVendorManagementResource;
 import com.kedialabs.application.config.AppConfig;
 import com.kedialabs.application.config.DBConfig;
 import com.kedialabs.resources.ContractorResource;
 import com.kedialabs.resources.ProjectResource;
 import com.kedialabs.resources.UserResource;
-import com.kedialabs.resources.VehicleInventoryResource;
-import com.kedialabs.resources.VendorResource;
+import com.kedialabs.resources.UserSessionResource;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 import io.dropwizard.setup.Environment;
 
 @Configuration
-@ComponentScan(basePackageClasses = { ContractorResource.class, ProjectResource.class, UserResource.class, VehicleInventoryResource.class,
-        VendorResource.class })
+@ComponentScan(basePackageClasses = {
+        ContractorResource.class,
+        ProjectResource.class,
+        UserResource.class,
+        UserSessionResource.class,
+        BatchingPlantVendorManagementResource.class,
+        BatchingPlantVehicleInventoryManagementResource.class
+})
 public class SpringBeanInitializer {
     
     @Inject

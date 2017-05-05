@@ -1,11 +1,12 @@
-package com.kedialabs.resources;
+package com.kedialabs.application.batchingplant.resource;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Named;
 import javax.validation.Valid;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -16,25 +17,24 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.codahale.metrics.annotation.Timed;
+import com.kedialabs.application.filters.AuthFilter;
+import com.kedialabs.application.filters.UserContext;
 import com.kedialabs.domain.Project;
 import com.kedialabs.domain.Vendor;
 import com.kedialabs.vendor.VendorDto;
 
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
-@Path("/v1/contractor/{contractorId}/project/{projectId}/vendor")
 @Named
-public class VendorResource {
+@Path("/v1/batching_plant/vendors")
+@Produces(value = MediaType.APPLICATION_JSON)
+public class BatchingPlantVendorManagementResource {
+
 
     @POST
     @Timed
-    public Response createUser(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@Valid VendorDto vendorDto){
-        Project project = Project.first("id",projectId,"contractor.id",contractorId,"deleted",Boolean.FALSE,"contractor.deleted",Boolean.FALSE);
-        if(Objects.isNull(project)){
-            throw new NotFoundException("vendor inventory doesn't exist");
-        }
+    @AuthFilter
+    public Response createUser(@Valid VendorDto vendorDto){
         Vendor vendor = new Vendor();
-        vendor.setProject(project);
+        vendor.setProject(UserContext.instance().getContext().getUser().getProject());
         vendor.setName(vendorDto.getName());
         vendor.setAddressLine1(vendorDto.getAddressLine1());
         vendor.setAddressLine2(vendorDto.getAddressLine2());
@@ -45,11 +45,23 @@ public class VendorResource {
         return Response.ok(vendor).build();
     }
     
+    @GET
+    @Path("/all")
+    @Timed
+    @AuthFilter
+    public Response getAllVendors(){
+        Project project = UserContext.instance().getContext().getUser().getProject();
+        List<Vendor> vendors = Vendor.where("project",project,"deleted",Boolean.FALSE);
+        return Response.ok(vendors).build();
+    }
+    
     @PUT
     @Path("/{vendorId}")
     @Timed
-    public Response updateUser(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@PathParam("vendorId") Long vendorId,@Valid VendorDto vendorDto){
-        Vendor vendor = Vendor.first("id",vendorId,"project.id",projectId,"project.contractor.id",contractorId,"deleted",Boolean.FALSE,"project.deleted",Boolean.FALSE,"project.contractor.deleted",Boolean.FALSE);
+    @AuthFilter
+    public Response updateUser(@PathParam("vendorId") Long vendorId,@Valid VendorDto vendorDto){
+        Project project = UserContext.instance().getContext().getUser().getProject();
+        Vendor vendor = Vendor.first("id",vendorId,"project",project,"deleted",Boolean.FALSE);
         if(Objects.isNull(vendor)){
             throw new NotFoundException("vendor inventory doesn't exist");
         }
@@ -66,8 +78,10 @@ public class VendorResource {
     @DELETE
     @Path("/{vendorId}")
     @Timed
-    public Response deleteUser(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@PathParam("vendorId") Long vendorId){
-        Vendor vendor = Vendor.first("id",vendorId,"project.id",projectId,"project.contractor.id",contractorId,"deleted",Boolean.FALSE,"project.deleted",Boolean.FALSE,"project.contractor.deleted",Boolean.FALSE);
+    @AuthFilter
+    public Response deleteUser(@PathParam("vendorId") Long vendorId){
+        Project project = UserContext.instance().getContext().getUser().getProject();
+        Vendor vendor = Vendor.first("id",vendorId,"project",project,"deleted",Boolean.FALSE);
         if(Objects.isNull(vendor)){
             throw new NotFoundException("vendor inventory doesn't exist");
         }
@@ -76,4 +90,5 @@ public class VendorResource {
         return Response.ok().build();
     }
     
+
 }

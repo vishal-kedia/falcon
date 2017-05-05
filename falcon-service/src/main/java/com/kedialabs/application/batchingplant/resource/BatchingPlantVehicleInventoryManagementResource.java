@@ -1,6 +1,8 @@
-package com.kedialabs.resources;
+package com.kedialabs.application.batchingplant.resource;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.inject.Named;
 import javax.validation.Valid;
@@ -16,6 +18,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.codahale.metrics.annotation.Timed;
+import com.google.common.collect.Lists;
+import com.kedialabs.application.filters.AuthFilter;
+import com.kedialabs.application.filters.UserContext;
 import com.kedialabs.batchingplant.VehicleInventoryDto;
 import com.kedialabs.batchingplant.VehicleInventoryUpdateDto;
 import com.kedialabs.batchingplant.domain.VehicleInventory;
@@ -23,14 +28,15 @@ import com.kedialabs.domain.Project;
 import com.kedialabs.domain.Vendor;
 
 @Produces(MediaType.APPLICATION_JSON)
-@Path("/v1/contractor/{contractorId}/project/{projectId}/vehicle_inventory")
+@Path("/v1/batching_plant/vehicles")
 @Named
-public class VehicleInventoryResource {
+public class BatchingPlantVehicleInventoryManagementResource {
     
     @POST
     @Timed
+    @AuthFilter
     public Response createVehicleInventory(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@Valid VehicleInventoryDto vehicleInventoryDto){
-        Project project = Project.first("id",projectId,"contractor.id",contractorId,"deleted",Boolean.FALSE,"contractor.deleted",Boolean.FALSE);
+        Project project = UserContext.instance().getContext().getUser().getProject();
         if(Objects.isNull(project)){
             throw new NotFoundException("Project doesn't exist");
         }
@@ -48,22 +54,26 @@ public class VehicleInventoryResource {
     }
     
     @GET
-    @Path("/{vehicleInventoryId}")
+    @Path("/all")
     @Timed
-    public Response getVehicleInventory(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@PathParam("vehicleInventoryId") Long vehicleInventoryId){
-        VehicleInventory vehicleInventory = VehicleInventory.first("id",vehicleInventoryId,"project.id",projectId,"project.contractor.id",contractorId,"deleted",Boolean.FALSE,"project.deleted",Boolean.FALSE,"project.contractor.deleted",Boolean.FALSE);
-        if(Objects.isNull(vehicleInventory)){
-            throw new NotFoundException("vehicle inventory doesn't exist");
+    @AuthFilter
+    public Response getVehicleInventory(){
+        Project project = UserContext.instance().getContext().getUser().getProject();
+        List<VehicleInventory> vehicleInventories = VehicleInventory.where("project",project,"deleted",Boolean.FALSE);
+        if(Objects.isNull(vehicleInventories) || vehicleInventories.isEmpty()){
+            return Response.ok(Lists.newArrayList()).build();
         }
-        return Response.ok(vehicleInventory).build();
+        return Response.ok(vehicleInventories.stream().filter(vehicle -> !vehicle.getVendor().getDeleted()).collect(Collectors.toList())).build();
     }
     
     @PUT
     @Path("/{vehicleInventoryId}")
     @Timed
-    public Response updateVehicleInventory(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@PathParam("vehicleInventoryId") Long vehicleInventoryId,@Valid VehicleInventoryUpdateDto vehicleInventoryUpdateDto){
-        VehicleInventory vehicleInventory = VehicleInventory.first("id",vehicleInventoryId,"project.id",projectId,"project.contractor.id",contractorId,"deleted",Boolean.FALSE,"project.deleted",Boolean.FALSE,"project.contractor.deleted",Boolean.FALSE);
-        if(Objects.isNull(vehicleInventory)){
+    @AuthFilter
+    public Response updateVehicleInventory(@PathParam("vehicleInventoryId") Long vehicleInventoryId,@Valid VehicleInventoryUpdateDto vehicleInventoryUpdateDto){
+        Project project = UserContext.instance().getContext().getUser().getProject();
+        VehicleInventory vehicleInventory = VehicleInventory.first("id",vehicleInventoryId,"project",project,"deleted",Boolean.FALSE);
+        if(Objects.isNull(vehicleInventory) || vehicleInventory.getVendor().getDeleted()){
             throw new NotFoundException("vehicle inventory doesn't exist");
         }
         vehicleInventory.setDescription(vehicleInventoryUpdateDto.getDescription());
@@ -74,8 +84,10 @@ public class VehicleInventoryResource {
     @DELETE
     @Path("/{vehicleInventoryId}")
     @Timed
-    public Response deleteVehicleInventory(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@PathParam("vehicleInventoryId") Long vehicleInventoryId){
-        VehicleInventory vehicleInventory = VehicleInventory.first("id",vehicleInventoryId,"project.id",projectId,"project.contractor.id",contractorId,"deleted",Boolean.FALSE,"project.deleted",Boolean.FALSE,"project.contractor.deleted",Boolean.FALSE);
+    @AuthFilter
+    public Response deleteVehicleInventory(@PathParam("vehicleInventoryId") Long vehicleInventoryId){
+        Project project = UserContext.instance().getContext().getUser().getProject();
+        VehicleInventory vehicleInventory = VehicleInventory.first("id",vehicleInventoryId,"project",project,"deleted",Boolean.FALSE);
         if(Objects.isNull(vehicleInventory)){
             throw new NotFoundException("vehicle inventory doesn't exist");
         }
