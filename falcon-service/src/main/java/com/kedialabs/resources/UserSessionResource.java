@@ -44,8 +44,8 @@ public class UserSessionResource {
             userSession.setUser(user);
             userSession.persist();
         }
-        return Response.ok(UserSessionDetails.builder().sessionId(userSession.getUuid()).contractorId(user.getProject().getContractor().getId())
-                .projectId(user.getProject().getId()).userType(user.getUserType()).build()).build();
+        return Response.ok(UserSessionDetails.builder().sessionId(userSession.getUuid())
+                .userType(user.getUserType()).build()).build();
     }
     
     @PUT

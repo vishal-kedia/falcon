@@ -10,8 +10,6 @@ import lombok.Data;
 public class UserSessionDetails {
     private String sessionId;
     private String name;
-    private Long contractorId;
-    private Long projectId;
     private UserType userType;
     
 }
