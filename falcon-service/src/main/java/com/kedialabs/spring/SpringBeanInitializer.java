@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
+import com.kedialabs.application.batchingplant.resource.BatchingPlantMaterialInventoryManagementResource;
 import com.kedialabs.application.batchingplant.resource.BatchingPlantVehicleInventoryManagementResource;
 import com.kedialabs.application.batchingplant.resource.BatchingPlantVendorManagementResource;
 import com.kedialabs.application.config.AppConfig;
@@ -31,7 +32,8 @@ import io.dropwizard.setup.Environment;
         UserResource.class,
         UserSessionResource.class,
         BatchingPlantVendorManagementResource.class,
-        BatchingPlantVehicleInventoryManagementResource.class
+        BatchingPlantVehicleInventoryManagementResource.class,
+        BatchingPlantMaterialInventoryManagementResource.class
 })
 public class SpringBeanInitializer {
     

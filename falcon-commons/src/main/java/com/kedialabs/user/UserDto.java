@@ -1,5 +1,7 @@
 package com.kedialabs.user;
 
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotEmpty;
 
 import lombok.Data;
@@ -15,6 +17,6 @@ public class UserDto {
     private String pinCode;
     private String phoneNo;
     private String password;
-    @NotEmpty
+    @NotNull
     private UserType userType;
 }

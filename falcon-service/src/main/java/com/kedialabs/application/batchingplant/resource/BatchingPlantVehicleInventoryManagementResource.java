@@ -35,7 +35,7 @@ public class BatchingPlantVehicleInventoryManagementResource {
     @POST
     @Timed
     @AuthFilter
-    public Response createVehicleInventory(@PathParam("contractorId") Long contractorId,@PathParam("projectId") Long projectId,@Valid VehicleInventoryDto vehicleInventoryDto){
+    public Response createVehicleInventory(@Valid VehicleInventoryDto vehicleInventoryDto){
         Project project = UserContext.instance().getContext().getUser().getProject();
         if(Objects.isNull(project)){
             throw new NotFoundException("Project doesn't exist");
@@ -49,6 +49,7 @@ public class BatchingPlantVehicleInventoryManagementResource {
         vehicleInventory.setVehicleNo(vehicleInventoryDto.getVehicleNo());
         vehicleInventory.setDescription(vehicleInventoryDto.getDescription());
         vehicleInventory.setVendor(vendor);
+        vehicleInventory.setCreatedBy(String.format("%s|%s", UserContext.instance().getContext().getUser().getId(),UserContext.instance().getContext().getUser().getName()));
         vehicleInventory.persist();
         return Response.ok(vehicleInventory).build();
     }
@@ -77,6 +78,7 @@ public class BatchingPlantVehicleInventoryManagementResource {
             throw new NotFoundException("vehicle inventory doesn't exist");
         }
         vehicleInventory.setDescription(vehicleInventoryUpdateDto.getDescription());
+        vehicleInventory.setUpdatedBy(String.format("%s|%s", UserContext.instance().getContext().getUser().getId(),UserContext.instance().getContext().getUser().getName()));
         vehicleInventory.persist();
         return Response.ok(vehicleInventory).build();
     }
@@ -92,6 +94,7 @@ public class BatchingPlantVehicleInventoryManagementResource {
             throw new NotFoundException("vehicle inventory doesn't exist");
         }
         vehicleInventory.setDeleted(Boolean.TRUE);
+        vehicleInventory.setUpdatedBy(String.format("%s|%s", UserContext.instance().getContext().getUser().getId(),UserContext.instance().getContext().getUser().getName()));
         vehicleInventory.persist();
         return Response.ok().build();
     }

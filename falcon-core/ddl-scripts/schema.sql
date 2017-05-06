@@ -120,6 +120,7 @@ CREATE TABLE `material_inventory_ledger` (
   `reciever_vehicle_id` int(10) unsigned NOT NULL,
   `transaction_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `remark` varchar(128),
+  `project_id` int(10) unsigned NOT NULL,
   `attributes` varchar(1000) DEFAULT '{}',
   `deleted` bit(1) DEFAULT NULL,
   `created_by` varchar(64),

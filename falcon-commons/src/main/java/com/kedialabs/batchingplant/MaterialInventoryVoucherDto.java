@@ -2,20 +2,26 @@ package com.kedialabs.batchingplant;
 
 import java.sql.Timestamp;
 
+import javax.validation.constraints.NotNull;
+
 import com.kedialabs.measurement.MaterialUnit;
-import com.kedialabs.measurement.Unit;
 
 import lombok.Data;
 
 @Data
 public class MaterialInventoryVoucherDto {
+    
+    @NotNull
     private RawMaterialType materialType;
     
+    @NotNull
     private InventoryType inventoryType;
     
+    @NotNull
     private Double quantity;
     
-    private Unit unit;
+    @NotNull
+    private MaterialUnit unit;
     
     private Long supplierId;
     
@@ -23,7 +29,8 @@ public class MaterialInventoryVoucherDto {
     
     private Long recieverVehicleId;
     
-    private Timestamp transactionTime;
+    @NotNull
+    private Long transactionTime;
     
     private String remark;
     

@@ -41,6 +41,7 @@ public class BatchingPlantVendorManagementResource {
         vendor.setCity(vendorDto.getCity());
         vendor.setPinCode(vendorDto.getPinCode());
         vendor.setPhoneNo(vendorDto.getPhoneNo());
+        vendor.setCreatedBy(String.format("%s|%s", UserContext.instance().getContext().getUser().getId(),UserContext.instance().getContext().getUser().getName()));
         vendor.persist();
         return Response.ok(vendor).build();
     }
@@ -71,6 +72,7 @@ public class BatchingPlantVendorManagementResource {
         vendor.setCity(vendorDto.getCity());
         vendor.setPinCode(vendorDto.getPinCode());
         vendor.setPhoneNo(vendorDto.getPhoneNo());
+        vendor.setUpdatedBy(String.format("%s|%s", UserContext.instance().getContext().getUser().getId(),UserContext.instance().getContext().getUser().getName()));
         vendor.persist();
         return Response.ok(vendor).build();
     }
@@ -86,6 +88,7 @@ public class BatchingPlantVendorManagementResource {
             throw new NotFoundException("vendor inventory doesn't exist");
         }
         vendor.setDeleted(Boolean.TRUE);
+        vendor.setUpdatedBy(String.format("%s|%s", UserContext.instance().getContext().getUser().getId(),UserContext.instance().getContext().getUser().getName()));
         vendor.persist();
         return Response.ok().build();
     }

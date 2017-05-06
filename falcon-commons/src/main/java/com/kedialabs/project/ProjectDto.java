@@ -1,5 +1,7 @@
 package com.kedialabs.project;
 
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotEmpty;
 
 import lombok.Data;
@@ -11,6 +13,6 @@ public class ProjectDto {
     private Double lat;
     private Double lng;
     private String description;
-    @NotEmpty
+    @NotNull
     private ProjectType projectType;
 }

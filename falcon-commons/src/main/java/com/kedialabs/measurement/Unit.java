@@ -4,13 +4,15 @@ import lombok.Getter;
 
 @Getter
 public enum Unit {
-    NA("NA"),
-    KILO_GRAM("Kg"),
-    METER("M"),
-    LITRE("Ltr"),
-    CUBIC_METER("M3");
+    NA("NA","NA"),
+    KILO_GRAM("Kg","weight"),
+    METER("M","length"),
+    LITRE("Ltr","liquid volume"),
+    CUBIC_METER("M3","volume");
     private final String name;
-    private Unit(String name) {
+    private final String type;
+    private Unit(String name,String type) {
         this.name = name;
+        this.type = type;
     }
 }

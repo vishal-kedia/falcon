@@ -1,12 +1,11 @@
 package com.kedialabs.batchingplant.domain;
 
 import java.sql.Timestamp;
-import java.util.Map;
+import java.util.Objects;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -19,17 +18,15 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.Validate;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 import com.kedialabs.batchingplant.InventoryType;
 import com.kedialabs.batchingplant.MaterialInventoryVoucherAttribute;
 import com.kedialabs.batchingplant.RawMaterialType;
-import com.kedialabs.converters.JsonMapConverter;
 import com.kedialabs.domain.BaseDomain;
+import com.kedialabs.domain.Project;
 import com.kedialabs.domain.Vendor;
 import com.kedialabs.measurement.MaterialUnit;
-import com.kedialabs.measurement.Unit;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -56,7 +53,7 @@ public class MaterialInventoryVoucher extends BaseDomain{
     
     @Column(name = "unit") 
     @Enumerated(EnumType.STRING)
-    private Unit unit;
+    private MaterialUnit unit;
     
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "supplier_id")
@@ -76,47 +73,75 @@ public class MaterialInventoryVoucher extends BaseDomain{
     @Column(name = "remark")
     private String remark;
     
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "project_id")
+    @JsonIgnore
+    private Project project;
+    
     @JsonIgnore
     public void setChallanNo(String challanNo){
-        this.getAttributes().put(MaterialInventoryVoucherAttribute.CHALLAN_NO.name(), challanNo);
+        if(!Strings.isNullOrEmpty(challanNo)){
+            this.getAttributes().put(MaterialInventoryVoucherAttribute.CHALLAN_NO.name(), challanNo);
+        }else{
+            this.getAttributes().remove(MaterialInventoryVoucherAttribute.CHALLAN_NO.name());
+        }
     }
     
+    @JsonProperty
     public String getChallanNo(){
         return (String)this.getAttributes().get(MaterialInventoryVoucherAttribute.CHALLAN_NO.name());
     }
     
     @JsonIgnore
     public void setRoyaltyNo(String royaltyNo){
-        this.getAttributes().put(MaterialInventoryVoucherAttribute.ROYALTY_NO.name(), royaltyNo);
+        if(!Strings.isNullOrEmpty(royaltyNo)){
+            this.getAttributes().put(MaterialInventoryVoucherAttribute.ROYALTY_NO.name(), royaltyNo);
+        }else{
+            this.getAttributes().remove(MaterialInventoryVoucherAttribute.ROYALTY_NO.name());
+        }
     }
     
+    @JsonProperty
     public String getRoyaltyNo(){
         return (String)this.getAttributes().get(MaterialInventoryVoucherAttribute.ROYALTY_NO.name());
     }
     
     @JsonIgnore
     public void setGateEntryNo(String gateEntryNo){
-        this.getAttributes().put(MaterialInventoryVoucherAttribute.GATE_ENTRY_NO.name(), gateEntryNo);
+        if(!Strings.isNullOrEmpty(gateEntryNo)){
+            this.getAttributes().put(MaterialInventoryVoucherAttribute.GATE_ENTRY_NO.name(), gateEntryNo);
+        }else{
+            this.getAttributes().remove(MaterialInventoryVoucherAttribute.GATE_ENTRY_NO.name());
+        }
     }
     
+    @JsonProperty
     public String getGateEntryNo(){
         return (String)this.getAttributes().get(MaterialInventoryVoucherAttribute.GATE_ENTRY_NO.name());
     }
     
     @JsonIgnore
     public void setSourceMeasurement(Double sourceMeasurement,MaterialUnit sourceMeasurementUnit){
-        Validate.notNull(sourceMeasurement);
-        Validate.notNull(sourceMeasurementUnit);
         Validate.notNull(materialType);
         Validate.isTrue(sourceMeasurementUnit.getUnit() == materialType.getUnit());
-        this.getAttributes().put(MaterialInventoryVoucherAttribute.SOURCE_MEASUREMENT.name(), sourceMeasurement);
-        this.getAttributes().put(MaterialInventoryVoucherAttribute.SOURCE_MEASUREMENT_UNIT.name(), sourceMeasurementUnit.getName());
+        if(Objects.nonNull(sourceMeasurement)){
+            Validate.notNull(sourceMeasurementUnit);
+            Validate.isTrue(materialType.getUnit().equals(sourceMeasurementUnit.getUnit()));
+            this.getAttributes().put(MaterialInventoryVoucherAttribute.SOURCE_MEASUREMENT.name(), sourceMeasurement);
+            this.getAttributes().put(MaterialInventoryVoucherAttribute.SOURCE_MEASUREMENT_UNIT.name(), sourceMeasurementUnit.name());
+        }else{
+            this.getAttributes().remove(MaterialInventoryVoucherAttribute.SOURCE_MEASUREMENT.name());
+            this.getAttributes().remove(MaterialInventoryVoucherAttribute.SOURCE_MEASUREMENT_UNIT.name());
+        }
+        
     }
     
+    @JsonProperty
     public Double getSourceMeasurement(){
         return (Double)this.getAttributes().get(MaterialInventoryVoucherAttribute.SOURCE_MEASUREMENT.name());
     }
     
+    @JsonProperty
     public MaterialUnit getSourceMeasurementUnit(){
         String materialUnit = (String)this.getAttributes().get(MaterialInventoryVoucherAttribute.SOURCE_MEASUREMENT_UNIT.name());
         if(!Strings.isNullOrEmpty(materialUnit)){
@@ -127,19 +152,36 @@ public class MaterialInventoryVoucher extends BaseDomain{
     
     @JsonIgnore
     public void setSource(String source){
-        this.getAttributes().put(MaterialInventoryVoucherAttribute.SOURCE.name(), source);
+        if(!Strings.isNullOrEmpty(source)){
+            this.getAttributes().put(MaterialInventoryVoucherAttribute.SOURCE.name(), source);
+        }else{
+            this.getAttributes().remove(MaterialInventoryVoucherAttribute.SOURCE.name());
+        }
     }
     
+    @JsonProperty
     public String getSource(){
         return (String)this.getAttributes().get(MaterialInventoryVoucherAttribute.SOURCE.name());
     }
     
     @JsonIgnore
     public void setQalityCheckPassed(Boolean isQualityCheckPassed){
-        this.getAttributes().put(MaterialInventoryVoucherAttribute.QUALITY_CHECK_PASSED.name(), isQualityCheckPassed);
+        if(Objects.nonNull(isQualityCheckPassed)){
+            this.getAttributes().put(MaterialInventoryVoucherAttribute.QUALITY_CHECK_PASSED.name(), isQualityCheckPassed);
+        }else{
+            this.getAttributes().remove(MaterialInventoryVoucherAttribute.QUALITY_CHECK_PASSED.name());
+        }
     }
     
+    @JsonProperty
     public Boolean getQualityCheckPassed(){
         return (Boolean)this.getAttributes().get(MaterialInventoryVoucherAttribute.QUALITY_CHECK_PASSED.name());
     }
+    
+    @PrePersist
+    public void prePersist(){
+        Validate.isTrue(materialType.getUnit().equals(unit.getUnit()));
+        super.prePersist();
+    }
+    
 }
