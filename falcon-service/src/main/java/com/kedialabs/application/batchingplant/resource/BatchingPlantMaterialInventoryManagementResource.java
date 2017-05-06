@@ -166,14 +166,14 @@ public class BatchingPlantMaterialInventoryManagementResource {
         VehicleInventory transportVehicle = null;
         if(Objects.nonNull(requestDto.getTransportVehicleId())){
             transportVehicle = VehicleInventory.first("id",requestDto.getTransportVehicleId(),"project",project);
-            if(Objects.isNull(transportVehicle) || transportVehicle.getVendor().getDeleted()){
+            if(Objects.isNull(transportVehicle)){
                 throw new NotFoundException("transport vehicle doesn't exist");
             }
         }
         VehicleInventory recieverVehicle = null;
         if(Objects.nonNull(requestDto.getRecieverVehicleId())){
             recieverVehicle = VehicleInventory.first("id",requestDto.getRecieverVehicleId(),"project",project);
-            if(Objects.isNull(recieverVehicle) || recieverVehicle.getVendor().getDeleted()){
+            if(Objects.isNull(recieverVehicle)){
                 throw new NotFoundException("reciever vehicle doesn't exist");
             }
         }

@@ -1,5 +1,5 @@
 package com.kedialabs.batchingplant;
 
 public enum ConcreteDispatchVoucherAttribute {
-    LOCATION
+    LOCATION,SLUMP
 }

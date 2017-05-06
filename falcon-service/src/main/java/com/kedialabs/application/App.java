@@ -12,6 +12,7 @@ import org.activejpa.jpa.JPA;
 import org.activejpa.utils.OpenSessionInViewFilter;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.kedialabs.application.batchingplant.resource.BatchingPlantConcreteDispatchInventoryManagementResource;
 import com.kedialabs.application.batchingplant.resource.BatchingPlantMaterialInventoryManagementResource;
 import com.kedialabs.application.batchingplant.resource.BatchingPlantVehicleInventoryManagementResource;
 import com.kedialabs.application.batchingplant.resource.BatchingPlantVendorManagementResource;
@@ -67,6 +68,7 @@ public class App extends Application<AppConfig>{
         env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(BatchingPlantVendorManagementResource.class));
         env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(BatchingPlantVehicleInventoryManagementResource.class));
         env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(BatchingPlantMaterialInventoryManagementResource.class));
+        env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(BatchingPlantConcreteDispatchInventoryManagementResource.class));
     }
     
     private void registerOSIVFilter(Environment environment) {

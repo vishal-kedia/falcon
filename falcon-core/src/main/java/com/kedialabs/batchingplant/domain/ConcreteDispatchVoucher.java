@@ -2,6 +2,7 @@ package com.kedialabs.batchingplant.domain;
 
 import java.sql.Timestamp;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -56,12 +57,32 @@ public class ConcreteDispatchVoucher extends BaseDomain {
     @Column(name = "dispatch_time")
     private Timestamp dispatchTime;
     
+    @Column(name = "remark")
+    private String remark;
+    
     @JsonIgnore
     public void setLocation(String location){
-        this.getAttributes().put(ConcreteDispatchVoucherAttribute.LOCATION.name(), location);
+        if(Objects.nonNull(location)){
+            this.getAttributes().put(ConcreteDispatchVoucherAttribute.LOCATION.name(), location);
+        }else{
+            this.getAttributes().remove(ConcreteDispatchVoucherAttribute.LOCATION.name());
+        }
     }
     
     public String getLocation(){
         return (String)this.getAttributes().get(ConcreteDispatchVoucherAttribute.LOCATION.name());
+    }
+    
+    @JsonIgnore
+    public void setSlump(Long slump){
+        if(Objects.nonNull(slump)){
+            this.getAttributes().put(ConcreteDispatchVoucherAttribute.SLUMP.name(), slump);
+        }else{
+            this.getAttributes().remove(ConcreteDispatchVoucherAttribute.SLUMP.name());
+        }
+    }
+    
+    public Long getSlump(){
+        return (Long)this.getAttributes().get(ConcreteDispatchVoucherAttribute.SLUMP.name());
     }
 }
