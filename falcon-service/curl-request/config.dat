@@ -1,0 +1,4 @@
+curl --request GET \
+  --url http://localhost:8080/v1/config \
+  --header 'content-type: application/json' \
+  --header 'x-session-id: 3c8ba576-1285-4e8a-9be3-06bdb6f59099'

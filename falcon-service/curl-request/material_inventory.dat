@@ -1,0 +1,35 @@
+curl --request POST \
+  --url http://localhost:8080/v1/batching_plant/material_inventory \
+  --header 'content-type: application/json' \
+  --header 'x-session-id: 3c8ba576-1285-4e8a-9be3-06bdb6f59099' \
+  --data '{
+    "material_type": "AGGREGATE_10MM",
+    "inventory_type": "IN",
+    "quantity": 50,
+    "unit": "METRIC_TON",
+    "supplier_id": 1,
+    "transport_vehicle_id": 1,
+    "transaction_time": 1494381491793,
+    "remark": "test remark",
+    "challan_no": "challanNo1",
+    "royalty_no": "royaltyNo1",
+    "gate_entry_no": "gate1",
+    "source_measurement": 50,
+    "source_measurement_unit": "METRIC_TON",
+    "source": "dala",
+    "quality_check_passed": true
+}'
+
+curl --request POST \
+  --url http://localhost:8080/v1/batching_plant/material_inventory \
+  --header 'content-type: application/json' \
+  --header 'x-session-id: 2df0d88f-fb47-4575-a58d-cee6537b9126' \
+  --data '{
+    "material_type": "AGGREGATE_10MM",
+    "inventory_type": "OUT",
+    "quantity": 50.0,
+    "unit": "METRIC_TON",
+    "reciever_vehicle_id": 1,
+    "transaction_time": 1494034909003,
+    "remark": "test entry"
+}'

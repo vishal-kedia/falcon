@@ -1,0 +1,21 @@
+curl --request POST \
+  --url http://localhost:8080/v1/contractor/1/project/1/user \
+  --header 'content-type: application/json' \
+  --data '{
+	"user_name" : "vishal",
+	"name" : "Vishal Kedia",
+	"address_line1" : "bk singh gali",
+	"address_line2" : "cinema road",
+	"city" : "Sidhi",
+	"pin_code" : "231225",
+	"phone_no" : "7702912226",
+	"user_type" : "SUPERVISOR"
+}'
+
+curl --request POST \
+  --url http://localhost:8080/v1/user/login \
+  --header 'content-type: application/json' \
+  --data '{
+	"user_name" : "vishal",
+	"password" : "Znxz4xzQyW"
+}'

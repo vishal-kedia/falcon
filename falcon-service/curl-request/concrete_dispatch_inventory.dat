@@ -1,0 +1,14 @@
+curl --request POST \
+  --url http://localhost:8080/v1/batching_plant/concrete_dispatch_inventory \
+  --header 'content-type: application/json' \
+  --header 'x-session-id: 2df0d88f-fb47-4575-a58d-cee6537b9126' \
+  --data '{
+    "concrete_type": "SLURRY",
+    "quantity": 50.0,
+    "unit": "CUBIC_METER",
+    "transport_vehicle_id": 1,
+    "dispatch_time": 1494034909003,
+    "remark": "test entry",
+    "location" : "xyz",
+    "slump" : 150
+}'

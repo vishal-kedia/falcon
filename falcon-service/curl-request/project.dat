@@ -1,0 +1,8 @@
+curl --request POST \
+  --url http://localhost:8080/v1/contractor/1/project \
+  --header 'content-type: application/json' \
+  --data '{
+	"name" : "Sasan Batching Plant",
+	"description" : "sasan project",
+	"project_type" : "BATCHING_PLANT"
+}'

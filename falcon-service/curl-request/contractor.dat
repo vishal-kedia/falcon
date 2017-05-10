@@ -1,0 +1,11 @@
+curl --request POST \
+  --url http://localhost:8080/v1/contractor \
+  --header 'content-type: application/json' \
+  --data '{
+	"name" : "Balaji Construction Co.",
+	"address_line1" : "cinema road",
+	"address_line2" : "anpara",
+	"city" : "sonebhardra",
+	"pin_code" : "231225",
+	"phone_no" : "7702912226"
+}'

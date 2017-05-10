@@ -1,0 +1,9 @@
+curl --request POST \
+  --url http://localhost:8080/v1/batching_plant/vehicles \
+  --header 'content-type: application/json' \
+  --header 'x-session-id: 2df0d88f-fb47-4575-a58d-cee6537b9126' \
+  --data '{
+	"vehicle_no" : "UP64N3372",
+	"description" : "swift dezire",
+	"vendor_id" : 1
+}'
