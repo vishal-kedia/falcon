@@ -8,7 +8,7 @@ public enum MaterialUnit {
     METRIC_TON("Metric Ton","MT",1000,Unit.KILO_GRAM),
     KILO_GRAM("Kg","Kg",1,Unit.KILO_GRAM),
     LITRE("Litre","Ltr",1,Unit.LITRE),
-    UNIT("No","No",1,Unit.NA),
+    UNIT("No","Unit",1,Unit.NA),
     CUBIC_METER("M3","M3",1,Unit.CUBIC_METER);
     private final String name;
     private final String shortName;

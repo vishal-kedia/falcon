@@ -18,6 +18,7 @@ import com.kedialabs.application.batchingplant.resource.BatchingPlantVehicleInve
 import com.kedialabs.application.batchingplant.resource.BatchingPlantVendorManagementResource;
 import com.kedialabs.application.config.AppConfig;
 import com.kedialabs.application.config.DBConfig;
+import com.kedialabs.resources.ConfigResource;
 import com.kedialabs.resources.ContractorResource;
 import com.kedialabs.resources.ProjectResource;
 import com.kedialabs.resources.UserResource;
@@ -28,6 +29,7 @@ import io.dropwizard.setup.Environment;
 
 @Configuration
 @ComponentScan(basePackageClasses = {
+		ConfigResource.class,
         ContractorResource.class,
         ProjectResource.class,
         UserResource.class,

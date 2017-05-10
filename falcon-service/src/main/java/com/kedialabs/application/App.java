@@ -18,6 +18,7 @@ import com.kedialabs.application.batchingplant.resource.BatchingPlantVehicleInve
 import com.kedialabs.application.batchingplant.resource.BatchingPlantVendorManagementResource;
 import com.kedialabs.application.config.AppConfig;
 import com.kedialabs.application.filters.UserAuthenticationFilter;
+import com.kedialabs.resources.ConfigResource;
 import com.kedialabs.resources.ContractorResource;
 import com.kedialabs.resources.ProjectResource;
 import com.kedialabs.resources.UserResource;
@@ -61,6 +62,7 @@ public class App extends Application<AppConfig>{
         });
         registerOSIVFilter(env);
         env.jersey().register(UserAuthenticationFilter.class);
+        env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(ConfigResource.class));
         env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(ContractorResource.class));
         env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(ProjectResource.class));
         env.jersey().register(SpringProvider.INSTANCE.getContext().getBean(UserResource.class));
